@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace StringCalculator.Tests
 {
@@ -10,33 +11,35 @@ namespace StringCalculator.Tests
         {
             if (string.IsNullOrWhiteSpace(numbers))
                 return 0;
+
+            var delimiters = new List<string> { ",", "\n" };
              
-                var delimiters = new List<char> {',', '\n'};
+            if (numbers.StartsWith("//"))
+            {
+                var delimiter = numbers.Split('\n').First().Replace("//", "");
 
-                var numbersString = numbers;
-                if (numbersString.StartsWith("//"))
-                {
-                    numbersString = numbers.Split('\n',2).Last();
-                    var newDelimiter = numbers.Split('\n').First().Replace("//", "");
-
-                    delimiters.Add(Convert.ToChar(newDelimiter));
-                }
+                var customDelimiters = delimiter.Split("][",StringSplitOptions.RemoveEmptyEntries).Select(d=> d.Replace("[","").Replace("]",""));
                  
-                var numbersToSum = numbersString
-                 .Split(delimiters.ToArray()) 
-                 .Select(int.Parse)
-                 .Where(x => x <= 1000);
-
-                var negatives = numbersToSum.Where(x => x < 0).ToList();
-
-                if (negatives.Any())
-                {
-                    throw new Exception($"Negatives not allowed: {string.Join(',',negatives)}");
-                }
                  
+                delimiters.AddRange(customDelimiters); 
+                numbers = numbers.Split('\n', 2).Last();
+            }
 
-                return numbersToSum.Sum();
-          
+            var numbersToSum = numbers
+             .Split(delimiters.ToArray(), StringSplitOptions.None)
+             .Select(int.Parse)
+             .Where(x => x <= 1000);
+
+            var negatives = numbersToSum.Where(x => x < 0).ToList();
+
+            if (negatives.Any())
+            {
+                throw new Exception($"Negatives not allowed: {string.Join(',', negatives)}");
+            }
+
+
+            return numbersToSum.Sum();
+
         }
     }
 }

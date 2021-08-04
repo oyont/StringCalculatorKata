@@ -83,5 +83,21 @@ namespace StringCalculator.Tests
 
             result.Should().Be(expected);
         }
+
+        [TestCase("//[|||]\n1|||2|||3", 6)]
+        public void Delimiters_can_be_any_length(string numbers, int expected)
+        {
+            var result = _sut.Add(numbers);
+
+            result.Should().Be(expected);
+        }
+
+        [TestCase("//[|][%]\n1|2%3", 6)]
+        public void Allow_multiple_delimiters(string numbers, int expected)
+        {
+            var result = _sut.Add(numbers);
+
+            result.Should().Be(expected);
+        }
     }
 }
