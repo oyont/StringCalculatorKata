@@ -48,5 +48,13 @@ namespace StringCalculator.Tests
             action.Should().Throw<ArgumentException>() 
                 .WithMessage("Unknown number");
         }
+
+        [TestCase("1\n2,3", 6)] 
+        public void Add_Should_Handle_New_Lines(string numbers, int expected)
+        {
+            var result = _sut.Add(numbers);
+
+            result.Should().Be(expected);
+        }
     }
 }

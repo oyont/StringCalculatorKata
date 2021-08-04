@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace StringCalculator.Tests
@@ -12,8 +13,9 @@ namespace StringCalculator.Tests
 
             try
             {
+                var delimiters = new List<char> {',', '\n'};
                 var sum = numbers
-                 .Split(',')
+                 .Split(delimiters.ToArray())
                  .Select(int.Parse)
                  .Sum();
 
