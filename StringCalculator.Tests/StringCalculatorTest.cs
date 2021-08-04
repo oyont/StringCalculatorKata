@@ -99,5 +99,14 @@ namespace StringCalculator.Tests
 
             result.Should().Be(expected);
         }
+
+
+        [TestCase("//[|][%][;]\n1|2%3;4", 10)]
+        public void Handle_multiple_delimiters_of_any_length(string numbers, int expected)
+        {
+            var result = _sut.Add(numbers);
+
+            result.Should().Be(expected);
+        }
     }
 }
