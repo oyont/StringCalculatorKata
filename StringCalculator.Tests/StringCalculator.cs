@@ -14,7 +14,17 @@ namespace StringCalculator.Tests
             try
             {
                 var delimiters = new List<char> {',', '\n'};
-                var sum = numbers
+
+                var numbersString = numbers;
+                if (numbersString.StartsWith("//"))
+                {
+                    numbersString = numbers.Split('\n',2).Last();
+                    var newDelimiter = numbers.Split('\n').First().Replace("//", "");
+
+                    delimiters.Add(Convert.ToChar(newDelimiter));
+                }
+                 
+                var sum = numbersString
                  .Split(delimiters.ToArray())
                  .Select(int.Parse)
                  .Sum();

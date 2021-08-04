@@ -56,5 +56,13 @@ namespace StringCalculator.Tests
 
             result.Should().Be(expected);
         }
+
+        [TestCase("//;\n1;2", 3)] 
+        public void Add_Should_Handle_Custom_Delimiters(string numbers, int expected)
+        {
+            var result = _sut.Add(numbers);
+
+            result.Should().Be(expected);
+        }
     }
 }
