@@ -10,9 +10,7 @@ namespace StringCalculator.Tests
         {
             if (string.IsNullOrWhiteSpace(numbers))
                 return 0;
-
-            try
-            {
+             
                 var delimiters = new List<char> {',', '\n'};
 
                 var numbersString = numbers;
@@ -24,17 +22,21 @@ namespace StringCalculator.Tests
                     delimiters.Add(Convert.ToChar(newDelimiter));
                 }
                  
-                var sum = numbersString
-                 .Split(delimiters.ToArray())
+                var numbersToSum = numbersString
+                 .Split(delimiters.ToArray()) 
                  .Select(int.Parse)
-                 .Sum();
+                 .Where(x => x <= 1000);
 
-                return sum;
-            }
-            catch (System.Exception ex)
-            { 
-                throw new ArgumentException("Unknown number");
-            }
+                var negatives = numbersToSum.Where(x => x < 0).ToList();
+
+                if (negatives.Any())
+                {
+                    throw new Exception($"Negatives not allowed: {string.Join(',',negatives)}");
+                }
+                 
+
+                return numbersToSum.Sum();
+          
         }
     }
 }
